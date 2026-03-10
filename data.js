@@ -320,53 +320,47 @@ function updateEXP(){
 	exp.innerHTML = expGain + " EXP";
 }
 
-function updateCharAverage(){
-	if (charAverage.value != "Merlinus"){
-		if (promoLevelAverage.options.length == 1){
-			promoLevelAverage.remove(0);
-			for (let i = 20; i >= 10; i--) {
-				promoLevelAverage.options[20-i] = new Option(i);
+function updateCharacter(){
+	if (character.value != "Merlinus"){
+		if (promotionLevel.length == 1){
+			promotionLevel.remove(0);
+			for (let i = 20; i >= 10; i--){
+				promotionLevel[20-i] = new Option(i);
 			}
 		}
 	}
 	else{
-		while (promoLevelAverage.options.length > 0){
-			promoLevelAverage.remove(0);
+		while (promotionLevel.length > 0){
+			promotionLevel.remove(0);
 		}
-		promoLevelAverage.options[0] = new Option(19);
+		promotionLevel[0] = new Option(19);
 	}
-	updateAverageTable();
+	updateTable();
 }
 
-function updateAverageTable(){
-	char = charAverage.value;
-	var averageGrowths = document.getElementById("averageGrowths");
-	while (averageGrowths.rows.length > 2){
-		averageGrowths.deleteRow(1);
+function updateTable(){
+	char = character.value;
+	var growthsTable = document.getElementById("growthsTable");
+	while (growthsTable.rows.length > 2){
+		growthsTable.deleteRow(1);
 	}
-	row = averageGrowths.insertRow(1);
-	level = row.insertCell(0);
-	hp = row.insertCell(1);
-	atk = row.insertCell(2);
-	skl = row.insertCell(3);
-	spd = row.insertCell(4);
-	lck = row.insertCell(5);
-	def = row.insertCell(6);
-	res = row.insertCell(7);
-	con = row.insertCell(8);
-	mov = row.insertCell(9);
-	level.innerHTML = "<b>Base stats</b>";
-	hp.innerHTML = "<span id=\"aBaseHP\"></span>";
-	atk.innerHTML = "<span id=\"aBaseATK\"></span>";
-	skl.innerHTML = "<span id=\"aBaseSKL\"></span>";
-	spd.innerHTML = "<span id=\"aBaseSPD\"></span>";
-	lck.innerHTML = "<span id=\"aBaseLCK\"></span>";
-	def.innerHTML = "<span id=\"aBaseDEF\"></span>";
-	res.innerHTML = "<span id=\"aBaseRES\"></span>";
-	con.innerHTML = "<span id=\"aBaseCON\"></span>";
-	mov.innerHTML = "<span id=\"aBaseMOV\"></span>";
+	let capFormat = "b";
+	if (growthsMode.selectedIndex == 1){
+		let capFormat = "u";
+	}
+	row = growthsTable.insertRow(1);
+	level = row.insertCell(0).innerHTML = "<b>Base stats</b>";
+	hp = row.insertCell(1).innerHTML = "<span id=\"BaseHP\"></span>";
+	atk = row.insertCell(2).innerHTML = "<span id=\"BaseATK\"></span>";
+	skl = row.insertCell(3).innerHTML = "<span id=\"BaseSKL\"></span>";
+	spd = row.insertCell(4).innerHTML = "<span id=\"BaseSPD\"></span>";
+	lck = row.insertCell(5).innerHTML = "<span id=\"BaseLCK\"></span>";
+	def = row.insertCell(6).innerHTML = "<span id=\"BaseDEF\"></span>";
+	res = row.insertCell(7).innerHTML = "<span id=\"BaseRES\"></span>";
+	con = row.insertCell(8).innerHTML = "<span id=\"BaseCON\"></span>";
+	mov = row.insertCell(9).innerHTML = "<span id=\"BaseMOV\"></span>";
 	for (let i = 0; i < 9; i++){
-		this["aBase"+(stats[i])].innerHTML = charBases.get(char)[i+1];
+		this["Base"+(stats[i])].innerHTML = charBases.get(char)[i+1];
 	}
 	currentHP = charBases.get(char)[1];
 	currentATK = charBases.get(char)[2];
@@ -379,56 +373,52 @@ function updateAverageTable(){
 	currentMOV = charBases.get(char)[9];
 	if (promotionGains.get(char) != undefined){
 		let baseLevel = charBases.get(char)[0];
-		for (let i = baseLevel-1; i < promoLevelAverage.value - 1; i++){
-			row = averageGrowths.insertRow(averageGrowths.rows.length - 1);
-			let level = row.insertCell(0);
-			let hp = row.insertCell(1);
-			let atk = row.insertCell(2);
-			let skl = row.insertCell(3);
-			let spd = row.insertCell(4);
-			let lck = row.insertCell(5);
-			let def = row.insertCell(6);
-			let res = row.insertCell(7);
-			let con = row.insertCell(8);
-			let mov = row.insertCell(9);
-			level.innerHTML = (i+1).toString() + " → " + (i+2).toString();
-			hp.innerHTML = "<span id=\"level"+(i+2).toString()+"HPavg\"></span>";
-			atk.innerHTML = "<span id=\"level"+(i+2).toString()+"ATKavg\"></span>";
-			skl.innerHTML = "<span id=\"level"+(i+2).toString()+"SKLavg\"></span>";
-			spd.innerHTML = "<span id=\"level"+(i+2).toString()+"SPDavg\"></span>";
-			lck.innerHTML = "<span id=\"level"+(i+2).toString()+"LCKavg\"></span>";
-			def.innerHTML = "<span id=\"level"+(i+2).toString()+"DEFavg\"></span>";
-			res.innerHTML = "<span id=\"level"+(i+2).toString()+"RESavg\"></span>";
-			con.innerHTML = "<span id=\"level"+(i+2).toString()+"CONavg\"></span>";
-			mov.innerHTML = "<span id=\"level"+(i+2).toString()+"MOVavg\"></span>";
+		for (let i = baseLevel-1; i < promotionLevel.value - 1; i++){
+			row = growthsTable.insertRow(growthsTable.rows.length - 1);
+			let level = row.insertCell(0).innerHTML = (i+1).toString() + " → " + (i+2).toString();
+			let hp = row.insertCell(1).innerHTML = "<span id=\"level"+(i+2).toString()+"HP\"></span>";
+			let atk = row.insertCell(2).innerHTML = "<span id=\"level"+(i+2).toString()+"ATK\"></span>";
+			let skl = row.insertCell(3).innerHTML = "<span id=\"level"+(i+2).toString()+"SKL\"></span>";
+			let spd = row.insertCell(4).innerHTML = "<span id=\"level"+(i+2).toString()+"SPD\"></span>";
+			let lck = row.insertCell(5).innerHTML = "<span id=\"level"+(i+2).toString()+"LCK\"></span>";
+			let def = row.insertCell(6).innerHTML = "<span id=\"level"+(i+2).toString()+"DEF\"></span>";
+			let res = row.insertCell(7).innerHTML = "<span id=\"level"+(i+2).toString()+"RES\"></span>";
+			let con = row.insertCell(8).innerHTML = "<span id=\"level"+(i+2).toString()+"CON\"></span>";
+			let mov = row.insertCell(9).innerHTML = "<span id=\"level"+(i+2).toString()+"MOV\"></span>";
 			for (let j = 0; j < 9; j++){
-				this["current"+stats[j]] += charGrowths.get(char)[j] / 100;
+				let statIncrease = 0;
+				let baseCaps = "Unpromoted";
+				if (char == "Merlinus"){
+					baseCaps = "Merlinus";
+				}
+				if (this["current"+stats[j]] < charCaps.get(char)[j]){
+					if (growthsMode.selectedIndex == 0){
+						statIncrease = charGrowths.get(char)[j] / 100;
+						statIncrease = Math.round(statIncrease * 100) / 100;
+					}
+					else {
+						statIncrease = Math.round((i+1) * charGrowths.get(char)[j] / 100) - Math.round(i * charGrowths.get(char)[j] / 100);
+					}
+					if (this["current"+stats[j]] + statIncrease > charCaps.get(char)[j]){
+						statIncrease = charCaps.get(char)[j] - this["current"+stats[j]];
+					}
+				}
+				this["current"+stats[j]] += statIncrease;
 				this["current"+stats[j]] = Math.round(this["current"+stats[j]] * 100) / 100;
-				let baseCaps = "Unpromoted";
-				if (char == "Merlinus"){
-					baseCaps = "Merlinus";
+				this["level"+(i+2).toString()+stats[j]].innerHTML = this["current"+stats[j]];
+				if (this["current"+stats[j]] >= charCaps.get(char)[j]){
+					this["level"+(i+2).toString()+stats[j]].innerHTML = "<"+capFormat+">" + this["level"+(i+2).toString()+stats[j]].innerHTML + "<"+capFormat+">";
 				}
-				if (this["current"+stats[j]] >= charCaps.get(baseCaps)[j]){
-					this["current"+stats[j]] = charCaps.get(baseCaps)[j];
-					this["level"+(i+2).toString()+stats[j]+"avg"].innerHTML = "<b>"+this["current"+stats[j]]+"</b>";
-				}
-				else{
-					this["level"+(i+2).toString()+stats[j]+"avg"].innerHTML = this["current"+stats[j]];
+				if (growthsMode.selectedIndex == 1){
+					if (statIncrease >= 1){
+						this["level"+(i+2).toString()+stats[j]].innerHTML = "<b>" + this["level"+(i+2).toString()+stats[j]].innerHTML + "<b>";
+					}
+					if (statIncrease >= 2){
+						this["level"+(i+2).toString()+stats[j]].innerHTML = "<i>" + this["level"+(i+2).toString()+stats[j]].innerHTML + "<i>";
+					}
 				}
 			}
 		}
-		row = averageGrowths.insertRow(averageGrowths.rows.length - 1);
-		let level = row.insertCell(0);
-		let hp = row.insertCell(1);
-		let atk = row.insertCell(2);
-		let skl = row.insertCell(3);
-		let spd = row.insertCell(4);
-		let lck = row.insertCell(5);
-		let def = row.insertCell(6);
-		let res = row.insertCell(7);
-		let con = row.insertCell(8);
-		let mov = row.insertCell(9);
-		level.innerHTML = "<b>Promotion</b>";
 		currentHP += promotionGains.get(char)[0];
 		currentATK += promotionGains.get(char)[1];
 		currentSKL += promotionGains.get(char)[2];
@@ -438,15 +428,17 @@ function updateAverageTable(){
 		currentRES += promotionGains.get(char)[6];
 		currentCON += promotionGains.get(char)[7];
 		currentMOV += promotionGains.get(char)[8];
-		hp.innerHTML = "<b>"+Math.round(currentHP * 100) / 100+"</b>";
-		atk.innerHTML = "<b>"+Math.round(currentATK * 100) / 100+"</b>";
-		skl.innerHTML = "<b>"+Math.round(currentSKL * 100) / 100+"</b>";
-		spd.innerHTML = "<b>"+Math.round(currentSPD * 100) / 100+"</b>";
-		lck.innerHTML = "<b>"+Math.round(currentLCK * 100) / 100+"</b>";
-		def.innerHTML = "<b>"+Math.round(currentDEF * 100) / 100+"</b>";
-		res.innerHTML = "<b>"+Math.round(currentRES * 100) / 100+"</b>";
-		con.innerHTML = "<b>"+Math.round(currentCON * 100) / 100+"</b>";
-		mov.innerHTML = "<b>"+Math.round(currentMOV * 100) / 100+"</b>";
+		row = growthsTable.insertRow(growthsTable.rows.length - 1);
+		let level = row.insertCell(0).innerHTML = "<b>Promotion</b>";
+		let hp = row.insertCell(1).innerHTML = "<"+capFormat+">"+Math.round(currentHP * 100) / 100+"</"+capFormat+">";
+		let atk = row.insertCell(2).innerHTML = "<"+capFormat+">"+Math.round(currentATK * 100) / 100+"</"+capFormat+">";
+		let skl = row.insertCell(3).innerHTML = "<"+capFormat+">"+Math.round(currentSKL * 100) / 100+"</"+capFormat+">";
+		let spd = row.insertCell(4).innerHTML = "<"+capFormat+">"+Math.round(currentSPD * 100) / 100+"</"+capFormat+">";
+		let lck = row.insertCell(5).innerHTML = "<"+capFormat+">"+Math.round(currentLCK * 100) / 100+"</"+capFormat+">";
+		let def = row.insertCell(6).innerHTML = "<"+capFormat+">"+Math.round(currentDEF * 100) / 100+"</"+capFormat+">";
+		let res = row.insertCell(7).innerHTML = "<"+capFormat+">"+Math.round(currentRES * 100) / 100+"</"+capFormat+">";
+		let con = row.insertCell(8).innerHTML = "<"+capFormat+">"+Math.round(currentCON * 100) / 100+"</"+capFormat+">";
+		let mov = row.insertCell(9).innerHTML = "<"+capFormat+">"+Math.round(currentMOV * 100) / 100+"</"+capFormat+">";
 	}
 	let baseLevel = 1;
 	if (promotionGains.get(char) == undefined){
@@ -457,268 +449,43 @@ function updateAverageTable(){
 		levelCap = 10;
 	}
 	for (let i = baseLevel-1; i < levelCap - 1; i++){
-		row = averageGrowths.insertRow(averageGrowths.rows.length - 1);
-		let level = row.insertCell(0);
-		let hp = row.insertCell(1);
-		let atk = row.insertCell(2);
-		let skl = row.insertCell(3);
-		let spd = row.insertCell(4);
-		let lck = row.insertCell(5);
-		let def = row.insertCell(6);
-		let res = row.insertCell(7);
-		let con = row.insertCell(8);
-		let mov = row.insertCell(9);
-		level.innerHTML = (i+1).toString() + " → " + (i+2).toString();
-		hp.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"HPavg\"></span>";
-		atk.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"ATKavg\"></span>";
-		skl.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"SKLavg\"></span>";
-		spd.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"SPDavg\"></span>";
-		lck.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"LCKavg\"></span>";
-		def.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"DEFavg\"></span>";
-		res.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"RESavg\"></span>";
-		con.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"CONavg\"></span>";
-		mov.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"MOVavg\"></span>";
+		row = growthsTable.insertRow(growthsTable.rows.length - 1);
+		let level = row.insertCell(0).innerHTML = (i+1).toString() + " → " + (i+2).toString();
+		let hp = row.insertCell(1).innerHTML = "<span id=\"Plevel"+(i+2).toString()+"HP\"></span>";
+		let atk = row.insertCell(2).innerHTML = "<span id=\"Plevel"+(i+2).toString()+"ATK\"></span>";
+		let skl = row.insertCell(3).innerHTML = "<span id=\"Plevel"+(i+2).toString()+"SKL\"></span>";
+		let spd = row.insertCell(4).innerHTML = "<span id=\"Plevel"+(i+2).toString()+"SPD\"></span>";
+		let lck = row.insertCell(5).innerHTML = "<span id=\"Plevel"+(i+2).toString()+"LCK\"></span>";
+		let def = row.insertCell(6).innerHTML = "<span id=\"Plevel"+(i+2).toString()+"DEF\"></span>";
+		let res = row.insertCell(7).innerHTML = "<span id=\"Plevel"+(i+2).toString()+"RES\"></span>";
+		let con = row.insertCell(8).innerHTML = "<span id=\"Plevel"+(i+2).toString()+"CON\"></span>";
+		let mov = row.insertCell(9).innerHTML = "<span id=\"Plevel"+(i+2).toString()+"MOV\"></span>";
 		for (let j = 0; j < 9; j++){
-			this["current"+stats[j]] += charGrowths.get(char)[j] / 100;
+			let statIncrease = 0;
+			if (this["current"+stats[j]] < charCaps.get(char)[j]){
+				if (growthsMode.selectedIndex == 0){
+					statIncrease = charGrowths.get(char)[j] / 100;
+					statIncrease = Math.round(statIncrease * 100) / 100;
+				}
+				else {
+					statIncrease = Math.round((i+1) * charGrowths.get(char)[j] / 100) - Math.round(i * charGrowths.get(char)[j] / 100);
+				}
+				if (this["current"+stats[j]] + statIncrease > charCaps.get(char)[j]){
+					statIncrease = charCaps.get("Unpromoted")[j] - this["current"+stats[j]];
+				}
+			}
+			this["current"+stats[j]] += statIncrease;
 			this["current"+stats[j]] = Math.round(this["current"+stats[j]] * 100) / 100;
-
+			this["Plevel"+(i+2).toString()+stats[j]].innerHTML = this["current"+stats[j]];
 			if (this["current"+stats[j]] >= charCaps.get(char)[j]){
-				this["current"+stats[j]] = charCaps.get(char)[j];
-				this["Plevel"+(i+2).toString()+stats[j]+"avg"].innerHTML = "<b>"+this["current"+stats[j]]+"</b>";
+				this["Plevel"+(i+2).toString()+stats[j]].innerHTML = "<"+capFormat+">" + this["Plevel"+(i+2).toString()+stats[j]].innerHTML + "<"+capFormat+">";
 			}
-			else{
-				this["Plevel"+(i+2).toString()+stats[j]+"avg"].innerHTML = this["current"+stats[j]];
-			}
-		}
-	}
-}
-
-function updateCharFixed(){
-	if (charFixed.value != "Merlinus"){
-		if (promoLevelFixed.options.length == 1){
-			promoLevelFixed.remove(0);
-			for (let i = 20; i >= 10; i--) {
-				promoLevelFixed.options[20-i] = new Option(i);
-			}
-		}
-	}
-	else{
-		while (promoLevelFixed.options.length > 0){
-			promoLevelFixed.remove(0);
-		}
-		promoLevelFixed.options[0] = new Option(19);
-	}
-	updateFixedTable();
-}
-
-function updateFixedTable(){
-	char = charFixed.value;
-	var fixedGrowths = document.getElementById("fixedGrowths");
-	while (fixedGrowths.rows.length > 2){
-		fixedGrowths.deleteRow(1);
-	}
-	row = fixedGrowths.insertRow(1);
-	level = row.insertCell(0);
-	hp = row.insertCell(1);
-	atk = row.insertCell(2);
-	skl = row.insertCell(3);
-	spd = row.insertCell(4);
-	lck = row.insertCell(5);
-	def = row.insertCell(6);
-	res = row.insertCell(7);
-	con = row.insertCell(8);
-	mov = row.insertCell(9);
-	level.innerHTML = "<b>Base stats</b>";
-	hp.innerHTML = "<span id=\"fBaseHP\"></span>";
-	atk.innerHTML = "<span id=\"fBaseATK\"></span>";
-	skl.innerHTML = "<span id=\"fBaseSKL\"></span>";
-	spd.innerHTML = "<span id=\"fBaseSPD\"></span>";
-	lck.innerHTML = "<span id=\"fBaseLCK\"></span>";
-	def.innerHTML = "<span id=\"fBaseDEF\"></span>";
-	res.innerHTML = "<span id=\"fBaseRES\"></span>";
-	con.innerHTML = "<span id=\"fBaseCON\"></span>";
-	mov.innerHTML = "<span id=\"fBaseMOV\"></span>";
-	for (let i = 0; i < 9; i++){
-		this["fBase"+(stats[i])].innerHTML = charBases.get(char)[i+1];
-	}
-	currentHP = charBases.get(char)[1];
-	currentATK = charBases.get(char)[2];
-	currentSKL = charBases.get(char)[3];
-	currentSPD = charBases.get(char)[4];
-	currentLCK = charBases.get(char)[5];
-	currentDEF = charBases.get(char)[6];
-	currentRES = charBases.get(char)[7];
-	currentCON = charBases.get(char)[8];
-	currentMOV = charBases.get(char)[9];
-	if (promotionGains.get(char) != undefined){
-		let baseLevel = charBases.get(char)[0];
-		for (let i = baseLevel-1; i < promoLevelFixed.value - 1; i++){
-			row = fixedGrowths.insertRow(fixedGrowths.rows.length - 1);
-			let level = row.insertCell(0);
-			let hp = row.insertCell(1);
-			let atk = row.insertCell(2);
-			let skl = row.insertCell(3);
-			let spd = row.insertCell(4);
-			let lck = row.insertCell(5);
-			let def = row.insertCell(6);
-			let res = row.insertCell(7);
-			let con = row.insertCell(8);
-			let mov = row.insertCell(9);
-			level.innerHTML = (i+1).toString() + " → " + (i+2).toString();
-			hp.innerHTML = "<span id=\"level"+(i+2).toString()+"HPgrowth\"></span>";
-			atk.innerHTML = "<span id=\"level"+(i+2).toString()+"ATKgrowth\"></span>";
-			skl.innerHTML = "<span id=\"level"+(i+2).toString()+"SKLgrowth\"></span>";
-			spd.innerHTML = "<span id=\"level"+(i+2).toString()+"SPDgrowth\"></span>";
-			lck.innerHTML = "<span id=\"level"+(i+2).toString()+"LCKgrowth\"></span>";
-			def.innerHTML = "<span id=\"level"+(i+2).toString()+"DEFgrowth\"></span>";
-			res.innerHTML = "<span id=\"level"+(i+2).toString()+"RESgrowth\"></span>";
-			con.innerHTML = "<span id=\"level"+(i+2).toString()+"CONgrowth\"></span>";
-			mov.innerHTML = "<span id=\"level"+(i+2).toString()+"MOVgrowth\"></span>";
-			for (let j = 0; j < 9; j++){
-				stat = Math.round((i+1) * charGrowths.get(char)[j] / 100) - Math.round(i * charGrowths.get(char)[j] / 100);
-				let baseCaps = "Unpromoted";
-				if (char == "Merlinus"){
-					baseCaps = "Merlinus";
+			if (growthsMode.selectedIndex == 1){
+				if (statIncrease >= 1){
+					this["Plevel"+(i+2).toString()+stats[j]].innerHTML = "<b>" + this["Plevel"+(i+2).toString()+stats[j]].innerHTML + "<b>";
 				}
-				if (stat == 0){
-					if (this["current"+stats[j]] == charCaps.get(baseCaps)[j]){
-						this["level"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u>"+this["current"+stats[j]]+"</u>";
-					}
-					else {
-						this["level"+(i+2).toString()+stats[j]+"growth"].innerHTML = this["current"+stats[j]];
-					}
-				}
-				if (stat == 1){
-					if (this["current"+stats[j]] + 1 == charCaps.get(baseCaps)[j]){
-						this["current"+stats[j]] += 1;
-						this["level"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u><b>"+this["current"+stats[j]]+"</b></u>";
-					}
-					else if (this["current"+stats[j]] == charCaps.get(baseCaps)[j]){
-						this["level"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u>"+this["current"+stats[j]]+"</u>";
-					}
-					else {
-						this["current"+stats[j]] += 1;
-						this["level"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<b>"+this["current"+stats[j]]+"</b>";
-					}
-				}
-				if (stat > 1){
-					if (this["current"+stats[j]] + 1 == charCaps.get(baseCaps)[j]){
-						this["current"+stats[j]] += 1;
-						this["level"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u><b>"+this["current"+stats[j]]+"</b></u>";
-					}
-					else if (this["current"+stats[j]] == charCaps.get(baseCaps)[j]){
-						this["level"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u>"+this["current"+stats[j]]+"</u>";
-					}
-					else if (this["current"+stats[j]] + stat >= charCaps.get(baseCaps)[j]){
-						this["current"+stats[j]] = charCaps.get(baseCaps)[j];
-						this["level"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u><i><b>"+this["current"+stats[j]]+"</b></i></u>";
-					}
-					else {
-						this["current"+stats[j]] += stat;
-						this["level"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<i><b>"+this["current"+stats[j]]+"</b></i>";
-					}
-				}
-			}
-		}
-		row = fixedGrowths.insertRow(fixedGrowths.rows.length - 1);
-		let level = row.insertCell(0);
-		let hp = row.insertCell(1);
-		let atk = row.insertCell(2);
-		let skl = row.insertCell(3);
-		let spd = row.insertCell(4);
-		let lck = row.insertCell(5);
-		let def = row.insertCell(6);
-		let res = row.insertCell(7);
-		let con = row.insertCell(8);
-		let mov = row.insertCell(9);
-		level.innerHTML = "<b>Promotion</b>";
-		currentHP += promotionGains.get(char)[0];
-		currentATK += promotionGains.get(char)[1];
-		currentSKL += promotionGains.get(char)[2];
-		currentSPD += promotionGains.get(char)[3];
-		currentLCK += promotionGains.get(char)[4];
-		currentDEF += promotionGains.get(char)[5];
-		currentRES += promotionGains.get(char)[6];
-		currentCON += promotionGains.get(char)[7];
-		currentMOV += promotionGains.get(char)[8];
-		hp.innerHTML = "<u>"+currentHP+"</u>";
-		atk.innerHTML = "<u>"+currentATK+"</u>";
-		skl.innerHTML = "<u>"+currentSKL+"</u>";
-		spd.innerHTML = "<u>"+currentSPD+"</u>";
-		lck.innerHTML = "<u>"+currentLCK+"</u>";
-		def.innerHTML = "<u>"+currentDEF+"</u>";
-		res.innerHTML = "<u>"+currentRES+"</u>";
-		con.innerHTML = "<u>"+currentCON+"</u>";
-		mov.innerHTML = "<u>"+currentMOV+"</u>";
-	}
-	let baseLevel = 1;
-	if (promotionGains.get(char) == undefined){
-		baseLevel = charBases.get(char)[0];
-	}
-	let levelCap = 20;
-	if (char == "Merlinus"){
-		levelCap = 10;
-	}
-	for (let i = baseLevel-1; i < levelCap - 1; i++){
-		row = fixedGrowths.insertRow(fixedGrowths.rows.length - 1);
-		let level = row.insertCell(0);
-		let hp = row.insertCell(1);
-		let atk = row.insertCell(2);
-		let skl = row.insertCell(3);
-		let spd = row.insertCell(4);
-		let lck = row.insertCell(5);
-		let def = row.insertCell(6);
-		let res = row.insertCell(7);
-		let con = row.insertCell(8);
-		let mov = row.insertCell(9);
-		level.innerHTML = (i+1).toString() + " → " + (i+2).toString();
-		hp.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"HPgrowth\"></span>";
-		atk.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"ATKgrowth\"></span>";
-		skl.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"SKLgrowth\"></span>";
-		spd.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"SPDgrowth\"></span>";
-		lck.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"LCKgrowth\"></span>";
-		def.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"DEFgrowth\"></span>";
-		res.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"RESgrowth\"></span>";
-		con.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"CONgrowth\"></span>";
-		mov.innerHTML = "<span id=\"Plevel"+(i+2).toString()+"MOVgrowth\"></span>";
-		for (let j = 0; j < 9; j++){
-			stat = Math.round((i+1) * charGrowths.get(char)[j] / 100) - Math.round(i * charGrowths.get(char)[j] / 100);
-			if (stat == 0){
-				if (this["current"+stats[j]] == charCaps.get(char)[j]){
-					this["Plevel"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u>"+this["current"+stats[j]]+"</u>";
-				}
-				else {
-					this["Plevel"+(i+2).toString()+stats[j]+"growth"].innerHTML = this["current"+stats[j]];
-				}
-			}
-			if (stat == 1){
-				if (this["current"+stats[j]] + 1 == charCaps.get(char)[j]){
-					this["current"+stats[j]] += 1;
-					this["Plevel"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u><b>"+this["current"+stats[j]]+"</b></u>";
-				}
-				else if (this["current"+stats[j]] == charCaps.get(char)[j]){
-					this["Plevel"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u>"+this["current"+stats[j]]+"</u>";
-				}
-				else {
-					this["current"+stats[j]] += 1;
-					this["Plevel"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<b>"+this["current"+stats[j]]+"</b>";
-				}
-			}
-			if (stat > 1){
-				if (this["current"+stats[j]] + 1 == charCaps.get(char)[j]){
-					this["current"+stats[j]] += 1;
-					this["Plevel"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u><b>"+this["current"+stats[j]]+"</b></u>";
-				}
-				else if (this["current"+stats[j]] == charCaps.get(char)[j]){
-					this["Plevel"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u>"+this["current"+stats[j]]+"</u>";
-				}
-				else if (this["current"+stats[j]] + stat >= charCaps.get(char)[j]){
-					this["current"+stats[j]] = charCaps.get(char)[j];
-					this["Plevel"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<u><i><b>"+this["current"+stats[j]]+"</b></i></u>";
-				}
-				else {
-					this["current"+stats[j]] += stat;
-					this["Plevel"+(i+2).toString()+stats[j]+"growth"].innerHTML = "<i><b>"+this["current"+stats[j]]+"</b></i>";
+				if (statIncrease >= 2){
+					this["Plevel"+(i+2).toString()+stats[j]].innerHTML = "<i>" + this["Plevel"+(i+2).toString()+stats[j]].innerHTML + "<i>";
 				}
 			}
 		}
@@ -728,7 +495,7 @@ function updateFixedTable(){
 var displayedHit = document.getElementById("displayedHit");
 var trueHit = document.getElementById("trueHit");
 for (let i = 0; i <= 100; i++){
-	displayedHit.options[i] = new Option(100-i);
+	displayedHit[i] = new Option(100-i);
 }
 displayedHit.selectedIndex = 25;
 updateHit();
@@ -743,8 +510,8 @@ var bossEXP = document.getElementById("bossEXP");
 var silencerEXP = document.getElementById("silencerEXP");
 var exp = document.getElementById("exp");
 for (let i = 0; i < 40; i++){
-	playerLevel.options[i] = new Option(40-i);
-	enemyLevel.options[i] = new Option(40-i);
+	playerLevel[i] = new Option(40-i);
+	enemyLevel[i] = new Option(40-i);
 }
 playerLevel.selectedIndex = 20;
 enemyLevel.selectedIndex = 20;
@@ -756,34 +523,14 @@ bossEXP.checked = false;
 silencerEXP.checked = false;
 updateEXP();
 
-var charAverage = document.getElementById("charAverage");
-var promoLevelAverage = document.getElementById("promoLevelAverage");
-var promoClassAverage = document.getElementById("promoClassAverage");
-for (let i = 0; i < characters.length; i++) {
-	if (characters[i] == "LArachel"){
-		charAverage.options[i] = new Option("L'Arachel");
-	}
-	else {
-		charAverage.options[i] = new Option(characters[i]);
-	}
+var character = document.getElementById("character");
+var promotionLevel = document.getElementById("promotionLevel");
+var promotionClass = document.getElementById("promotionClass");
+growthsMode.selectedIndex = 0;
+for (let i = 0; i < characters.length; i++){
+	character[i] = new Option(characters[i]);
 }
-for (let i = 20; i >= 10; i--) {
-	promoLevelAverage.options[20-i] = new Option(i);
+for (let i = 20; i >= 10; i--){
+	promotionLevel[20-i] = new Option(i);
 }
-updateCharAverage();
-
-var charFixed = document.getElementById("charFixed");
-var promoLevelFixed = document.getElementById("promoLevelFixed");
-var promoClassFixed = document.getElementById("promoClassFixed");
-for (let i = 0; i < characters.length; i++) {
-	if (characters[i] == "LArachel"){
-		charFixed.options[i] = new Option("L'Arachel");
-	}
-	else {
-		charFixed.options[i] = new Option(characters[i]);
-	}
-}
-for (let i = 20; i >= 10; i--) {
-	promoLevelFixed.options[20-i] = new Option(i);
-}
-updateCharFixed();
+updateCharacter();
